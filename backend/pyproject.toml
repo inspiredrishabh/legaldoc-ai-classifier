@@ -1,0 +1,9 @@
+[project]
+name = "legaldoc-ai-backend"
+version = "2.0.0"
+description = "Legal Document OCR & Q&A Backend"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
