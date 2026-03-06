@@ -21,6 +21,7 @@ class QAPair(BaseModel):
 
 class AskRequest(BaseModel):
     query: str = Field(..., min_length=1, max_length=5000)
+    language: str = Field(default="en", pattern="^(en|hi)$")
 
 
 # --- Response models ---

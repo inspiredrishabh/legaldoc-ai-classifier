@@ -11,5 +11,5 @@ async def ask_legal_question(
     request: AskRequest,
     pipeline: PipelineService = Depends(get_pipeline_service),
 ):
-    result = await pipeline.ask_legal_question(request.query)
+    result = await pipeline.ask_legal_question(request.query, language=request.language)
     return AskResponse(**result)

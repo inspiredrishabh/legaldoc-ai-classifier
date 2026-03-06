@@ -1,6 +1,5 @@
 # LegalDoc AI Classifier
 
-
 A **fully offline** legal document analysis platform. Upload legal documents (PDF, JPG, PNG), extract text via PaddleOCR, and ask natural-language questions answered by a local LLM grounded in Indian legal acts.
 
 No cloud APIs required — OCR runs locally with PaddleOCR and the LLM runs via Ollama.
@@ -242,6 +241,8 @@ cd backend
 # 1. Create a virtual environment
 python -m venv venv
 
+
+
 # 2. Activate it
 # Windows
 venv\Scripts\activate
@@ -250,6 +251,9 @@ source venv/bin/activate
 
 # 3. Install dependencies
 pip install -r requirements.txt
+
+Alternative
+python -m pip install -r requirements.txt
 
 # 4. Copy and configure environment variables
 copy .env.example .env      # Windows

@@ -18,6 +18,7 @@ export interface BatchUploadResponse {
 
 export interface AskRequest {
   query: string;
+  language?: "en" | "hi";
 }
 
 export interface AskResponse {

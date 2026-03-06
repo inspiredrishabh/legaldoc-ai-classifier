@@ -16,9 +16,10 @@ class Settings(BaseSettings):
     OCR_LANG: str = "auto"
 
     # LLM
-    LLM_MODE: str = "local"
+    LLM_MODE: str = "cloud"
     OLLAMA_HOST: str = "http://localhost:11434"
     OLLAMA_MODEL: str = "mistral"
+    MISTRAL_KEY: str = ""
 
     # Data paths
     DATA_DIR: Path = Path(__file__).resolve().parent.parent.parent / "data"
