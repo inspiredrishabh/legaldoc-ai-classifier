@@ -55,3 +55,62 @@ class HealthResponse(BaseModel):
     status: str
     service: str
     llm_mode: str
+
+
+# --- Document Summary models ---
+
+class SummaryRequest(BaseModel):
+    document_text: str = Field(..., min_length=1, max_length=50000)
+    language: str = Field(default="en", pattern="^(en|hi)$")
+    detail_level: str = Field(default="standard", pattern="^(brief|standard|detailed)$")
+
+
+class SummaryResponse(BaseModel):
+    summary: str
+    key_points: list[str]
+    word_count: int
+    status: str
+
+
+# --- Timeline Generator models ---
+
+class TimelineRequest(BaseModel):
+    document_text: str = Field(..., min_length=1, max_length=50000)
+    language: str = Field(default="en", pattern="^(en|hi)$")
+
+
+class TimelineResponse(BaseModel):
+    timeline: str
+    event_count: int
+    status: str
+
+
+# --- Voice Assistant models ---
+
+class VoiceQueryRequest(BaseModel):
+    transcript: str = Field(..., min_length=1, max_length=5000)
+    language: str = Field(default="en", pattern="^(en|hi)$")
+
+
+class VoiceQueryResponse(BaseModel):
+    answer: str
+    source: str
+    method: str
+    confidence: float | None = None
+    transcript: str
+
+
+# --- Judgement Prediction models ---
+
+class JudgementRequest(BaseModel):
+    case_description: str = Field(..., min_length=1, max_length=50000)
+    case_type: str = Field(default="general", max_length=100)
+    language: str = Field(default="en", pattern="^(en|hi)$")
+
+
+class JudgementResponse(BaseModel):
+    prediction: str
+    relevant_sections: list[str]
+    confidence_level: str
+    disclaimer: str
+    status: str

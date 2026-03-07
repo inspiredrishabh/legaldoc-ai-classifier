@@ -166,7 +166,7 @@ export function ChatInterface() {
       {/* Chat Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-parchment-50/50">
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-center px-4">
+          <div className="flex flex-col items-center justify-center min-h-full text-center px-4 py-6">
             <div className="h-16 w-16 rounded-full bg-parchment-200 flex items-center justify-center mb-4">
               <svg className="h-8 w-8 text-legal-brown" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round"
@@ -176,10 +176,10 @@ export function ChatInterface() {
             <p className="font-serif font-semibold text-legal-brown text-base mb-1">
               Welcome to the Legal AI Assistant
             </p>
-            <p className="text-sm font-body text-sepia-500 mb-6 max-w-sm">
+            <p className="text-sm font-body text-sepia-500 mb-5 max-w-sm">
               Ask any question about Indian law. I'll search through 8 legal acts and provide answers with relevant case precedents.
             </p>
-            <div className="flex flex-wrap justify-center gap-2 max-w-md">
+            <div className="flex flex-wrap justify-center gap-2 max-w-xs">
               {QUICK_QUESTIONS.map((q) => (
                 <button
                   key={q}

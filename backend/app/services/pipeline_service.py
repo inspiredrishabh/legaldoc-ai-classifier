@@ -68,8 +68,11 @@ class PipelineService:
         # Step 2: Retrieve relevant sections
         sections = self._retrieval.retrieve_relevant_sections(query)
         if not sections:
+            msg = ("उपलब्ध अधिनियमों में इस प्रश्न से संबंधित कोई कानूनी प्रावधान नहीं मिला।"
+                   if language == "hi" else
+                   "No relevant legal provision was found for this query in the available Acts.")
             return {
-                "answer": "No relevant legal provision was found for this query in the available Acts.",
+                "answer": msg,
                 "source": "acts",
                 "method": "fallback",
             }
@@ -77,8 +80,11 @@ class PipelineService:
         # Step 3: Build context
         context = self._context.build_context(sections)
         if not context or len(context) < 100:
+            msg = ("संबंधित कानूनी प्रावधान मिले, लेकिन विश्वसनीय व्याख्या उत्पन्न करने के लिए पर्याप्त पाठ उपलब्ध नहीं था।"
+                   if language == "hi" else
+                   "Relevant legal provisions were found, but insufficient text was available to generate a reliable explanation.")
             return {
-                "answer": "Relevant legal provisions were found, but insufficient text was available to generate a reliable explanation.",
+                "answer": msg,
                 "source": "acts",
                 "method": "fallback",
             }
@@ -86,9 +92,12 @@ class PipelineService:
         # Step 4: Check LLM availability
         llm_available = await check_llm_connection(self._settings)
         if not llm_available:
+            note = ("⚠ AI इंजन वर्तमान में अनुपलब्ध है। नीचे कानूनी पाठ दिया गया है:\n\n"
+                    if language == "hi" else
+                    "⚠ AI engine is currently unavailable. Showing legal text-based information only:\n\n")
             return {
-                "answer": "AI engine is currently unavailable. Showing legal text-based information only.",
-                "source": "system",
+                "answer": note + context,
+                "source": "acts",
                 "method": "no_llm",
             }
 
@@ -99,15 +108,20 @@ class PipelineService:
             llm_answer = await llm.generate_answer(prompt, system_message=system_message)
         except Exception as exc:
             logger.error("LLM generate_answer failed: %s", exc)
+            note = ("⚠ AI मॉडल से उत्तर प्राप्त करने में त्रुटि हुई। नीचे कानूनी पाठ दिया गया है:\n\n"
+                    if language == "hi" else "")
             return {
-                "answer": context,
+                "answer": note + context if language == "hi" else context,
                 "source": "acts",
                 "method": "fallback",
             }
 
         if not llm_answer or not llm_answer.strip():
+            msg = ("AI मॉडल दिए गए कानूनी संदर्भ से विश्वसनीय उत्तर उत्पन्न नहीं कर सका।"
+                   if language == "hi" else
+                   "The AI model could not generate a reliable answer from the provided legal context.")
             return {
-                "answer": "The AI model could not generate a reliable answer from the provided legal context.",
+                "answer": msg,
                 "source": "llm",
                 "method": "fallback",
             }
