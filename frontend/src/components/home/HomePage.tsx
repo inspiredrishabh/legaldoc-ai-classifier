@@ -47,6 +47,52 @@ const FEATURES = [
       </svg>
     ),
   },
+  {
+    title: "AI Document Summary",
+    description:
+      "Generate concise, AI-powered summaries of lengthy legal documents with key points extraction at multiple detail levels.",
+    icon: (
+      <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round"
+          d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+  },
+  {
+    title: "Legal Timeline Generator",
+    description:
+      "Extract and visualize chronological events, filing deadlines, hearing dates, and statutory timelines from legal documents.",
+    icon: (
+      <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round"
+          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+  },
+  {
+    title: "Voice Legal Assistant",
+    description:
+      "Ask legal questions using your voice. Speak naturally in English or Hindi and get accurate spoken answers from the AI.",
+    icon: (
+      <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round"
+          d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+      </svg>
+    ),
+  },
+  {
+    title: "AI Judgement Prediction",
+    description:
+      "Describe a case scenario and get an AI-powered judgement prediction with confidence levels and relevant legal sections.",
+    icon: (
+      <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3v18" />
+        <path d="M5 7l7-4 7 4" />
+        <path d="M2 17l3-10 3 10a4.35 4.35 0 0 1-6 0z" />
+        <path d="M16 17l3-10 3 10a4.35 4.35 0 0 1-6 0z" />
+      </svg>
+    ),
+  },
 ];
 
 const SUPPORTED_ACTS = [
@@ -87,8 +133,9 @@ export function HomePage({ onGetStarted }: HomePageProps) {
   return (
     <div className="animate-fade-in">
       {/* Hero Section */}
-      <section className="relative overflow-hidden" style={{ backgroundColor: "#F4E9D8" }}>
-        <div className="absolute inset-0 bg-parchment-grain opacity-20" />
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/parchment-bg.jpg')" }} />
+        <div className="absolute inset-0 bg-parchment-50/40" />
         <div className="relative max-w-6xl mx-auto px-6 py-24 md:py-32 text-center">
           {/* Scales of Justice */}
           <div className="mx-auto mb-8 h-20 w-20 rounded-full bg-legal-brown/10 border-2 border-legal-brown/30 flex items-center justify-center">
@@ -158,7 +205,7 @@ export function HomePage({ onGetStarted }: HomePageProps) {
             <div className="decorative-line mt-4 max-w-xs mx-auto" />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {FEATURES.map((feature) => (
               <div
                 key={feature.title}
@@ -235,23 +282,32 @@ export function HomePage({ onGetStarted }: HomePageProps) {
               </div>
             ))}
           </div>
+
+          {/* "And More" banner centered below the grid */}
+          <div className="mt-6 flex justify-center">
+            <div className="inline-flex items-center gap-3 px-8 py-3 rounded-full border border-dashed border-legal-gold/50 bg-legal-gold/5">
+              <span className="text-xl">⚖️</span>
+              <span className="font-serif font-bold text-legal-gold text-base">& More</span>
+              <span className="text-xs font-body text-sepia-500">— Constitution, amendments &amp; growing coverage</span>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-legal-brown to-legal-darkbrown relative overflow-hidden">
+      <section className="py-20 bg-parchment-100 border-y border-sepia-200 relative overflow-hidden">
         <div className="absolute inset-0 bg-parchment-grain opacity-5" />
         <div className="relative max-w-3xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-parchment-50 mb-4">
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-legal-brown mb-4">
             Ready to Analyze Your Legal Documents?
           </h2>
-          <p className="text-base font-body text-parchment-300 mb-8 max-w-lg mx-auto">
+          <p className="text-base font-body text-sepia-600 mb-8 max-w-lg mx-auto">
             Start uploading documents, reviewing extracted text, and asking legal questions — all from one place.
           </p>
           <button
             onClick={onGetStarted}
-            className="px-10 py-4 bg-legal-gold text-legal-darkbrown font-body font-bold rounded-xl
-                       hover:bg-legal-gold/90 transition-all duration-200 shadow-lg hover:shadow-xl text-lg"
+            className="px-10 py-4 bg-legal-brown text-parchment-50 font-body font-bold rounded-xl
+                       hover:bg-legal-darkbrown transition-all duration-200 shadow-lg hover:shadow-xl text-lg"
           >
             Launch Application
           </button>

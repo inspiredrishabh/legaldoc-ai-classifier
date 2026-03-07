@@ -81,8 +81,15 @@ async def check_llm_connection(settings: Settings, timeout_s: float = 5.0) -> bo
     """Check if the configured LLM backend is reachable."""
     try:
         if settings.LLM_MODE == "cloud":
-            # For cloud mode, just verify the API key is set
-            return bool(settings.MISTRAL_KEY)
+            if not settings.MISTRAL_KEY:
+                return False
+            # Validate the API key with a lightweight models list request
+            async with httpx.AsyncClient(timeout=timeout_s) as client:
+                response = await client.get(
+                    "https://api.mistral.ai/v1/models",
+                    headers={"Authorization": f"Bearer {settings.MISTRAL_KEY}"},
+                )
+                return response.status_code == 200
         async with httpx.AsyncClient(timeout=timeout_s) as client:
             response = await client.get(f"{settings.OLLAMA_HOST}/api/tags")
             return response.status_code == 200

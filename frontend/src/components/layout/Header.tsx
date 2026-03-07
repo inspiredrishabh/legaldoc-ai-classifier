@@ -55,7 +55,7 @@ export function Header({ page, onNavigate }: HeaderProps) {
             Application
           </button>
           <div className="hidden sm:block h-5 w-px bg-legal-gold/30" />
-          <span className="badge-gold text-xs hidden sm:inline-flex">v2.0</span>
+          <span className="text-xs hidden sm:inline-flex px-2.5 py-0.5 rounded-full bg-parchment-50 text-legal-maroon font-semibold border border-legal-gold/40">v 2.121</span>
         </nav>
       </div>
     </header>

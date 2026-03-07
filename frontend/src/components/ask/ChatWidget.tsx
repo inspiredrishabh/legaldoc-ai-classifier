@@ -9,7 +9,7 @@ export function ChatWidget() {
       {/* Chat panel */}
       {isOpen && (
         <div
-          className="mb-3 w-[380px] max-h-[calc(100vh-120px)] h-[460px] rounded-2xl shadow-2xl border border-sepia-200 overflow-hidden
+          className="mb-3 w-[400px] max-h-[calc(100vh-100px)] h-[600px] rounded-2xl shadow-2xl border border-sepia-200 overflow-hidden
                      animate-fade-in bg-parchment-50"
           style={{ animationDuration: "200ms" }}
         >

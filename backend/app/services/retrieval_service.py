@@ -3,15 +3,45 @@ from app.models.schemas import ActSection
 
 # Port of actMatcher.js ACT_KEYWORDS
 ACT_KEYWORDS: dict[str, list[str]] = {
-    "IPC": ["ipc", "penal", "murder", "theft", "rape", "crime"],
-    "CRPC": ["crpc", "procedure", "bail", "arrest", "trial"],
-    "CPC": ["cpc", "civil procedure", "suit", "injunction"],
-    "IEA": ["evidence", "proof", "witness"],
-    "HMA": ["marriage", "divorce", "husband", "wife"],
+    "IPC": ["ipc", "penal", "murder", "theft", "rape", "crime", "punishment", "offence", "kidnapping", "forgery", "robbery", "cheating", "assault", "hurt"],
+    "CRPC": ["crpc", "procedure", "bail", "arrest", "trial", "fir", "investigation", "complaint", "warrant", "summon", "prosecution", "cognizance"],
+    "CPC": ["cpc", "civil procedure", "suit", "injunction", "decree", "appeal"],
+    "IEA": ["evidence", "proof", "witness", "testimony", "admissible"],
+    "HMA": ["marriage", "divorce", "husband", "wife", "maintenance", "custody"],
     "IDA": ["divorce act"],
-    "MVA": ["motor", "vehicle", "accident"],
+    "MVA": ["motor", "vehicle", "accident", "license", "driving"],
     "NIA": ["cheque", "negotiable", "dishonour"],
 }
+
+# Hindi legal terms → English equivalents for query pre-processing
+HINDI_TO_ENGLISH: dict[str, str] = {
+    "चोरी": "theft", "हत्या": "murder", "बलात्कार": "rape", "अपराध": "crime",
+    "सजा": "punishment", "दंड": "punishment", "जमानत": "bail", "गिरफ्तारी": "arrest",
+    "गिरफ्तार": "arrest", "मुकदमा": "trial", "शिकायत": "complaint", "पुलिस": "police fir",
+    "एफआईआर": "fir", "तलाक": "divorce", "शादी": "marriage", "विवाह": "marriage",
+    "पति": "husband", "पत्नी": "wife", "भरण-पोषण": "maintenance", "गवाही": "witness",
+    "सबूत": "evidence", "प्रमाण": "proof", "जांच": "investigation",
+    "अदालत": "court", "न्यायालय": "court", "वकील": "lawyer",
+    "धारा": "section", "कानून": "law", "अधिनियम": "act",
+    "फरार": "absconder", "धोखाधड़ी": "cheating", "जालसाज़ी": "forgery",
+    "लूट": "robbery", "डकैती": "dacoity", "मारपीट": "hurt assault",
+    "ज़मानत": "bail", "वारंट": "warrant", "समन": "summon",
+    "दहेज": "dowry", "उत्पीड़न": "cruelty", "अपहरण": "kidnapping",
+    "दुर्घटना": "accident", "वाहन": "vehicle", "चेक": "cheque",
+    "संपत्ति": "property", "कब्जा": "possession", "हिरासत": "custody",
+    "आरोपी": "accused", "आरोप": "charge", "दोषी": "guilty",
+    "निर्दोष": "innocent", "सुनवाई": "hearing", "फैसला": "judgment",
+    "याचिका": "petition", "अपील": "appeal",
+}
+
+
+def _translate_hindi_keywords(query: str) -> str:
+    """Replace Hindi legal terms with English equivalents so retrieval works."""
+    result = query
+    for hindi, english in HINDI_TO_ENGLISH.items():
+        if hindi in result:
+            result = result + " " + english
+    return result
 
 
 class RetrievalService:
@@ -81,7 +111,10 @@ class RetrievalService:
         """Port of retrieveSections.js retrieveRelevantSections().
         Full retrieval pipeline: analyze -> detect acts -> filter -> extract sections -> rank -> top N.
         """
-        analysis = self.analyze_query(query)
+        # Pre-process: append English equivalents of any Hindi terms
+        enriched_query = _translate_hindi_keywords(query)
+
+        analysis = self.analyze_query(enriched_query)
         tokens = analysis["tokens"]
         normalized = analysis["normalized"]
 
